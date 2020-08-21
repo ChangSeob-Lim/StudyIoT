@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundWorkerApp", "Back
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BogusMqttWinPubApp", "BogusMqttWinPubApp\BogusMqttWinPubApp.csproj", "{918D7A8F-2EFA-4381-93CB-C8742C319708}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MqttMoniteringWpfApp", "MqttWpfApp\MqttMoniteringWpfApp.csproj", "{FF57F6E7-FB27-4A40-BE16-7EA1F5302CF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{918D7A8F-2EFA-4381-93CB-C8742C319708}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{918D7A8F-2EFA-4381-93CB-C8742C319708}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{918D7A8F-2EFA-4381-93CB-C8742C319708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF57F6E7-FB27-4A40-BE16-7EA1F5302CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF57F6E7-FB27-4A40-BE16-7EA1F5302CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF57F6E7-FB27-4A40-BE16-7EA1F5302CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF57F6E7-FB27-4A40-BE16-7EA1F5302CF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{37C66BEF-6FF9-45B6-A660-BD64EDF8191C} = {2AD7D8A4-FB13-4C73-96D6-04843C34B0FB}
 		{24FD9A78-BB6C-40DA-82A5-763ACADFD3D8} = {2AD7D8A4-FB13-4C73-96D6-04843C34B0FB}
 		{918D7A8F-2EFA-4381-93CB-C8742C319708} = {2AD7D8A4-FB13-4C73-96D6-04843C34B0FB}
+		{FF57F6E7-FB27-4A40-BE16-7EA1F5302CF2} = {C20D9150-9891-4D42-8509-947D0534C750}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5FCD87F1-F77F-4736-BEBC-7292878519F1}
