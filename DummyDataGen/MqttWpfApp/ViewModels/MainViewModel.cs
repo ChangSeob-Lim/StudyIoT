@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using MahApps.Metro.Controls;
+using MqttMoniteringWpfApp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,16 @@ namespace MqttMoniteringWpfApp.ViewModels
         public MainViewModel()
         {
             DisplayName = "MQTT Monitoring App - v0.9";
+        }
+
+        protected override void OnDeactivate(bool close) //닫힘버튼 눌럿을때
+        {
+            if (Commons.BROKERCLIENT.IsConnected)
+            {
+                Commons.BROKERCLIENT.Disconnect(); //연결 끊어줌
+                Commons.BROKERCLIENT = null;
+            }
+            Environment.Exit(0); //완전 종료
         }
 
         public void ExitProgram()
@@ -53,7 +64,8 @@ namespace MqttMoniteringWpfApp.ViewModels
 
             if (result == true)
             {
-                MessageBox.Show("Start Subscribe!!!"); // Here is in Logics...
+                //MessageBox.Show("Start Subscribe!!"); // Here is in Logics...
+                ActivateItem(new DataBaseViewModel());
             }
         }
     }

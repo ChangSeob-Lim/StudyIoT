@@ -14,6 +14,25 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="ConsoleTextBox" TargetType="{x:Type TextBox}" >
+                <Setter Property="IsReadOnly" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TextBox">
+                            <ScrollViewer RenderTransformOrigin="0.5,0.5" VerticalScrollBarVisibility="Auto">
+                                <ScrollViewer.RenderTransform>
+                                    <ScaleTransform ScaleY="-1"/>
+                                </ScrollViewer.RenderTransform>
+                                <TextBox Text="{TemplateBinding Text}" Background="AntiqueWhite" RenderTransformOrigin="0.5,0.5">
+                                    <TextBox.RenderTransform>
+                                        <ScaleTransform ScaleY="-1"/>
+                                    </TextBox.RenderTransform>
+                                </TextBox>
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

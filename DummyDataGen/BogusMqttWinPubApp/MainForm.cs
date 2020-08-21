@@ -40,11 +40,11 @@ namespace BogusMqttWinPubApp
 
             MqttBrokerUrl = "localhost"; // or 127.0.0.1 or my IpAddress
 
-            string[] Rooms = new[] { "DinigRoom", "LivingRoom", "BathRoom", "BedRoom", "GuestRoom" };
+            string[] Rooms = new[] { "DiningRoom", "LivingRoom", "BathRoom", "BedRoom", "GuestRoom" };
 
             SensorFaker = new Faker<SensorInfo>()
                             .RuleFor(s => s.Dev_Id, f => f.PickRandom(Rooms))
-                            .RuleFor(s => s.Curr_Time, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff")) // f=>f.Date.Past(0)
+                            .RuleFor(s => s.Curr_Time, f => f.Date.Past(0).ToString("yyyy-MM-dd HH:mm:ss.ff")) // 
                             .RuleFor(s => s.Temp, f => float.Parse(f.Random.Float(19.0f, 32f).ToString("0.00")))
                             .RuleFor(s => s.Humid, f => float.Parse(f.Random.Float(40.0f, 70f).ToString("0.0")))
                             .RuleFor(s => s.Press, f => float.Parse(f.Random.Float(899.0f, 1010.0f).ToString("0.0")));
