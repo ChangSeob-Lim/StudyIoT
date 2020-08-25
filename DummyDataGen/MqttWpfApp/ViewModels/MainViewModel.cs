@@ -39,7 +39,13 @@ namespace MqttMoniteringWpfApp.ViewModels
 
         public void LoadDataBaseView()
         {
-            ActivateItem(new DataBaseViewModel());
+            if(Commons.BROKERCLIENT != null)
+                ActivateItem(new DataBaseViewModel());
+            else
+            {
+                var wManager = new WindowManager();
+                wManager.ShowDialog(new ErrorPopupViewModel("Error|MQTT가 실행되지 않았습니다"));
+            }
         }
 
         public void LoadRealTimeView()

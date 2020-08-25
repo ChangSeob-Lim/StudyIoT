@@ -1,6 +1,9 @@
 ﻿using Caliburn.Micro;
 using MqttMoniteringWpfApp.Helpers;
+using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
@@ -68,8 +71,14 @@ namespace MqttMoniteringWpfApp.ViewModels
         {
             BrokerUrl = Commons.BROKERHOST;
             Topic = Commons.PUB_TOPIC;
-            Commons.CONNSTRING = ConnString = "Server=localhost;Port3306;" +
+            Commons.CONNSTRING = ConnString = "Server=localhost;Port=3306;" +
                 "Database=iot_sensordata;Uid=root;Pwd=mysql_p@ssw0rd";
+
+            if (Commons.ISCONNECTED)
+            {
+                IsConnected = true;
+                Connect();
+            }
         }
 
 
@@ -87,6 +96,7 @@ namespace MqttMoniteringWpfApp.ViewModels
                         Commons.BROKERCLIENT.Subscribe(new string[] { Commons.PUB_TOPIC }
                         , new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
                         UpdateText(">>> Message : Boroker Connected");
+                        Commons.ISCONNECTED = true;
                     }
                 }
                 catch (Exception)
@@ -102,6 +112,7 @@ namespace MqttMoniteringWpfApp.ViewModels
                         Commons.BROKERCLIENT.MqttMsgPublishReceived -= BROKERCLIENT_MqttMsgPublishReceived; //메세지 받을때마다 이벤트 시작
                         Commons.BROKERCLIENT.Disconnect();//연결 끊기
                         UpdateText(">>> Message : Boroker Disconnected...");
+                        Commons.ISCONNECTED = false;
                     }
                 }
                 catch (Exception)
@@ -119,7 +130,58 @@ namespace MqttMoniteringWpfApp.ViewModels
 
         private void InsertDataBase(string message)
         {
-            //TODO
+            var currDatas = JsonConvert.DeserializeObject<Dictionary<string, string>>(message);
+            
+            using (var conn = new MySqlConnection(Commons.CONNSTRING))
+            {
+                string strInsQuery = @"INSERT INTO smarthometbl 
+                                       (Dev_Id, 
+                                        Curr_Time, 
+                                        Temp, 
+                                        Humid, 
+                                        Press) 
+                                      VALUES 
+                                        (@Dev_Id, 
+                                         @Curr_Time, 
+                                         @Temp, 
+                                         @Humid, 
+                                         @Press)";
+
+                try
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(strInsQuery, conn);
+
+                    MySqlParameter paramDevId = new MySqlParameter("@Dev_Id", MySqlDbType.VarChar);
+                    paramDevId.Value = currDatas["Dev_Id"];
+                    cmd.Parameters.Add(paramDevId);
+
+                    MySqlParameter paramCurrTime = new MySqlParameter("@Curr_Time", MySqlDbType.DateTime);
+                    paramCurrTime.Value = DateTime.Parse(currDatas["Curr_Time"]);
+                    cmd.Parameters.Add(paramCurrTime);
+
+                    MySqlParameter paramTemp = new MySqlParameter("@Temp", MySqlDbType.Float);
+                    paramTemp.Value = currDatas["Temp"];
+                    cmd.Parameters.Add(paramTemp);
+
+                    MySqlParameter paramHumid = new MySqlParameter("@Humid", MySqlDbType.Float);
+                    paramHumid.Value = currDatas["Humid"];
+                    cmd.Parameters.Add(paramHumid);
+
+                    MySqlParameter paramPress = new MySqlParameter("@Press", MySqlDbType.Float);
+                    paramPress.Value = currDatas["Press"];
+                    cmd.Parameters.Add(paramPress);
+
+                    if (cmd.ExecuteNonQuery() == 1)
+                        UpdateText(">>> [DB] Inserted");
+                    else
+                        UpdateText(">>> [DB] Faile");
+                }
+                catch (Exception ex)
+                {
+                    UpdateText($">>> [Error] {ex.Message}");
+                }
+            }
         }
 
         private void UpdateText(string message)
